@@ -28,7 +28,7 @@ public class FileUtil {
     }
 
     /**
-     * 获取指定路径文件的属性
+     * 获取指定路径文件的属性对象
      *
      * @param path 文件路径
      * @return FileAttributes对象
@@ -64,9 +64,9 @@ public class FileUtil {
             fileAttributes.setOwner(Files.getOwner(Paths.get(path), LinkOption.NOFOLLOW_LINKS));
 
         } catch (IOException e) {
-            logger.error(getLinesString("获取文件属性失败，I/O异常。", path, e.getMessage()));
+            logger.debug(getLinesString("获取文件属性失败，I/O异常。", path, e.getMessage()));
         } catch (SecurityException e) {
-            logger.error(getLinesString("获取文件属性失败，安全异常。", path, e.getMessage()));
+            logger.debug(getLinesString("获取文件属性失败，安全异常。", path, e.getMessage()));
         }
         return fileAttributes;
     }
@@ -91,15 +91,15 @@ public class FileUtil {
             Files.setAttribute(Paths.get(path), attribute, value, options);
             return true;
         } catch (UnsupportedOperationException e) {
-            logger.error(getLinesString("设置文件属性失败，属性视图" + options.toString() + "不可用。", e.getMessage()));
+            logger.debug(getLinesString("设置文件属性失败，属性视图" + Arrays.toString(options) + "不可用。", e.getMessage()));
         } catch (IllegalArgumentException e) {
-            logger.error(getLinesString("设置文件属性失败，不支持的属性" + attribute, e.getMessage()));
+            logger.debug(getLinesString("设置文件属性失败，不支持的属性" + attribute, e.getMessage()));
         } catch (ClassCastException e) {
-            logger.error(getLinesString("设置文件属性失败，属性值不是预期的类型" + value.getClass().toString(), e.getMessage()));
+            logger.debug(getLinesString("设置文件属性失败，属性值不是预期的类型" + value.getClass().toString(), e.getMessage()));
         } catch (IOException e) {
-            logger.error(getLinesString("设置文件属性失败，文件I/O异常。", e.getMessage()));
+            logger.debug(getLinesString("设置文件属性失败，文件I/O异常。", e.getMessage()));
         } catch (SecurityException e) {
-            logger.error(getLinesString("设置文件属性失败，文件安全异常。", e.getMessage()));
+            logger.debug(getLinesString("设置文件属性失败，文件安全异常。", e.getMessage()));
         }
         return false;
     }
@@ -166,11 +166,11 @@ public class FileUtil {
         try {
             return Files.getOwner(Paths.get(path), LinkOption.NOFOLLOW_LINKS);
         } catch (UnsupportedOperationException e) {
-            logger.error(getLinesString("获取文件的拥有者失败，属性视图不可用。", e.getMessage()));
+            logger.debug(getLinesString("获取文件的拥有者失败，属性视图不可用。", e.getMessage()));
         } catch (IOException e) {
-            logger.error(getLinesString("获取文件的拥有者失败，文件I/O异常。", e.getMessage()));
+            logger.debug(getLinesString("获取文件的拥有者失败，文件I/O异常。", e.getMessage()));
         } catch (SecurityException e) {
-            logger.error(getLinesString("获取文件的拥有者失败，文件安全异常。", e.getMessage()));
+            logger.debug(getLinesString("获取文件的拥有者失败，文件安全异常。", e.getMessage()));
         }
         return null;
     }
@@ -211,7 +211,7 @@ public class FileUtil {
         try {
             return Files.isRegularFile(Paths.get(path));
         } catch (SecurityException e) {
-            logger.error(getLinesString("判断是否文件失败，安全异常。", path, e.getMessage()));
+            logger.debug(getLinesString("判断是否文件失败，安全异常。", path, e.getMessage()));
             return false;
         }
     }
@@ -229,10 +229,10 @@ public class FileUtil {
         try {
             return Files.isSameFile(Paths.get(path1), Paths.get(path2));
         } catch (IOException e) {
-            logger.error(getLinesString("文件比较失败，I/O异常。", path1, path2));
+            logger.debug(getLinesString("文件比较失败，I/O异常。", path1, path2));
             return false;
         } catch (SecurityException e) {
-            logger.error(getLinesString("文件比较失败，安全异常。", path1, path2));
+            logger.debug(getLinesString("文件比较失败，安全异常。", path1, path2));
             return false;
         }
     }
@@ -249,7 +249,7 @@ public class FileUtil {
         try {
             return Files.isDirectory(Paths.get(path));
         } catch (SecurityException e) {
-            logger.error(getLinesString("判断是否目录失败，安全异常。", path, e.getMessage()));
+            logger.debug(getLinesString("判断是否目录失败，安全异常。", path, e.getMessage()));
             return false;
         }
     }
@@ -266,10 +266,10 @@ public class FileUtil {
         try {
             return Files.isHidden(Paths.get(path));
         } catch (IOException e) {
-            logger.error(getLinesString("判断隐藏文件失败，I/O异常。", path, e.getMessage()));
+            logger.debug(getLinesString("判断隐藏文件失败，I/O异常。", path, e.getMessage()));
             return false;
         } catch (SecurityException e) {
-            logger.error(getLinesString("判断隐藏文件失败，安全异常。", path, e.getMessage()));
+            logger.debug(getLinesString("判断隐藏文件失败，安全异常。", path, e.getMessage()));
             return false;
         }
     }
@@ -286,7 +286,7 @@ public class FileUtil {
         try {
             return Files.isReadable(Paths.get(path));
         } catch (SecurityException e) {
-            logger.error(getLinesString("判断是否可读失败，安全异常。", e.getMessage()));
+            logger.debug(getLinesString("判断是否可读失败，安全异常。", e.getMessage()));
             return false;
         }
     }
@@ -317,7 +317,7 @@ public class FileUtil {
         try {
             return Files.isWritable(Paths.get(path));
         } catch (SecurityException e) {
-            logger.error(getLinesString("判断是否可写失败，安全异常。", e.getMessage()));
+            logger.debug(getLinesString("判断是否可写失败，安全异常。", e.getMessage()));
             return false;
         }
     }
@@ -348,7 +348,7 @@ public class FileUtil {
         try {
             return Files.isExecutable(Paths.get(path));
         } catch (SecurityException e) {
-            logger.error(getLinesString("判断是否可执行失败，安全异常。", e.getMessage()));
+            logger.debug(getLinesString("判断是否可执行失败，安全异常。", e.getMessage()));
             return false;
         }
     }
@@ -380,9 +380,9 @@ public class FileUtil {
             BasicFileAttributes attributes = Files.readAttributes(Paths.get(path), BasicFileAttributes.class, LinkOption.NOFOLLOW_LINKS);
             return attributes.creationTime().toMillis();
         } catch (IOException e) {
-            logger.error(getLinesString("获取创建时间失败，I/O异常。", path, e.getMessage()));
+            logger.debug(getLinesString("获取创建时间失败，I/O异常。", path, e.getMessage()));
         } catch (SecurityException e) {
-            logger.error(getLinesString("获取创建时间失败，安全异常。", path, e.getMessage()));
+            logger.debug(getLinesString("获取创建时间失败，安全异常。", path, e.getMessage()));
         }
         return 0L;
     }
@@ -413,9 +413,9 @@ public class FileUtil {
             BasicFileAttributes attributes = Files.readAttributes(Paths.get(path), BasicFileAttributes.class, LinkOption.NOFOLLOW_LINKS);
             return attributes.lastAccessTime().toMillis();
         } catch (IOException e) {
-            logger.error(getLinesString("获取最后访问时间失败，I/O异常。", path, e.getMessage()));
+            logger.debug(getLinesString("获取最后访问时间失败，I/O异常。", path, e.getMessage()));
         } catch (SecurityException e) {
-            logger.error(getLinesString("获取最后访问时间失败，安全异常。", path, e.getMessage()));
+            logger.debug(getLinesString("获取最后访问时间失败，安全异常。", path, e.getMessage()));
         }
         return 0L;
     }
@@ -446,9 +446,9 @@ public class FileUtil {
             BasicFileAttributes attributes = Files.readAttributes(Paths.get(path), BasicFileAttributes.class, LinkOption.NOFOLLOW_LINKS);
             return attributes.lastModifiedTime().toMillis();
         } catch (IOException e) {
-            logger.error(getLinesString("获取最后修改时间失败，I/O异常。", path, e.getMessage()));
+            logger.debug(getLinesString("获取最后修改时间失败，I/O异常。", path, e.getMessage()));
         } catch (SecurityException e) {
-            logger.error(getLinesString("获取最后修改时间失败，安全异常。", path, e.getMessage()));
+            logger.debug(getLinesString("获取最后修改时间失败，安全异常。", path, e.getMessage()));
         }
         return 0L;
     }
@@ -488,6 +488,7 @@ public class FileUtil {
         return FileSystems.getDefault().getSeparator();
     }
 
+    // -- 创建目录 --
 
     /**
      * 创建多级目录，并设置权限
@@ -515,15 +516,13 @@ public class FileUtil {
             }
             return true;
         } catch (FileAlreadyExistsException e) {
-            logger.error(getLinesString("创建目录失败，目录已存在。", e.getMessage()));
-            return true;
+            logger.debug(getLinesString("创建目录失败，目录已存在。", e.getMessage()));
         } catch (UnsupportedOperationException | IOException e) {
-            logger.error(getLinesString("创建目录失败,指定的权限不正确。", e.getMessage()));
-            return false;
+            logger.debug(getLinesString("创建目录失败,指定的权限不正确。", e.getMessage()));
         } catch (SecurityException e) {
-            logger.error(getLinesString("创建目录失败，安全异常。", e.getMessage()));
-            return false;
+            logger.debug(getLinesString("创建目录失败，安全异常。", e.getMessage()));
         }
+        return false;
     }
 
     /**
@@ -537,6 +536,7 @@ public class FileUtil {
     public static boolean createDirectories(String path) {
         return createDirectories(path, null);
     }
+
 
     // -- 列出指定目录路径下的文件 --
 
@@ -565,60 +565,58 @@ public class FileUtil {
     public static List<File> listFiles(String path, ListFilesOption[] options, String... extensions) {
         List<File> files = new ArrayList<>();
 
-        boolean isRecursion = false;
-        boolean ignoreFile = false;
-        boolean ignoreDirectory = false;
-        boolean ignoreHidden = false;
-        ListFilesOption extensionOption = null;
-        ListFilesOption sortOption = null;
+        if (isDirectory(path)) {
+            boolean isRecursion = false;
+            boolean ignoreFile = false;
+            boolean ignoreDirectory = false;
+            boolean ignoreHidden = false;
+            ListFilesOption extensionOption = null;
+            ListFilesOption sortOption = null;
 
-        if (null != options) {
-            for (ListFilesOption option : options) {
-                switch (option) {
-                    case RECURSION:
-                        isRecursion = true;
-                        break;
-                    case IGNORE_FILE:
-                        ignoreFile = true;
-                        break;
-                    case IGNORE_DIRECTORY:
-                        ignoreDirectory = true;
-                        break;
-                    case IGNORE_HIDDEN:
-                        ignoreHidden = true;
-                        break;
-                    case INCLUDE_EXTENSION:
-                        extensionOption = ListFilesOption.INCLUDE_EXTENSION;
-                        break;
-                    case EXCLUDE_EXTENSION:
-                        extensionOption = ListFilesOption.EXCLUDE_EXTENSION;
-                        break;
-                    case SORT_LAST_MODIFIED_DESC:
-                        sortOption = ListFilesOption.SORT_LAST_MODIFIED_DESC;
-                        break;
-                    case SORT_LAST_MODIFIED_ASC:
-                        sortOption = ListFilesOption.SORT_LAST_MODIFIED_ASC;
-                        break;
-                    case SORT_LAST_ACCESS_DESC:
-                        sortOption = ListFilesOption.SORT_LAST_ACCESS_DESC;
-                        break;
-                    case SORT_LAST_ACCESS_ASC:
-                        sortOption = ListFilesOption.SORT_LAST_ACCESS_ASC;
-                        break;
-                    case SORT_CREATION_DESC:
-                        sortOption = ListFilesOption.SORT_CREATION_DESC;
-                        break;
-                    case SORT_CREATION_ASC:
-                        sortOption = ListFilesOption.SORT_CREATION_ASC;
-                        break;
+            if (null != options) {
+                for (ListFilesOption option : options) {
+                    switch (option) {
+                        case RECURSION:
+                            isRecursion = true;
+                            break;
+                        case IGNORE_FILE:
+                            ignoreFile = true;
+                            break;
+                        case IGNORE_DIRECTORY:
+                            ignoreDirectory = true;
+                            break;
+                        case IGNORE_HIDDEN:
+                            ignoreHidden = true;
+                            break;
+                        case INCLUDE_EXTENSION:
+                            extensionOption = ListFilesOption.INCLUDE_EXTENSION;
+                            break;
+                        case EXCLUDE_EXTENSION:
+                            extensionOption = ListFilesOption.EXCLUDE_EXTENSION;
+                            break;
+                        case SORT_LAST_MODIFIED_DESC:
+                            sortOption = ListFilesOption.SORT_LAST_MODIFIED_DESC;
+                            break;
+                        case SORT_LAST_MODIFIED_ASC:
+                            sortOption = ListFilesOption.SORT_LAST_MODIFIED_ASC;
+                            break;
+                        case SORT_LAST_ACCESS_DESC:
+                            sortOption = ListFilesOption.SORT_LAST_ACCESS_DESC;
+                            break;
+                        case SORT_LAST_ACCESS_ASC:
+                            sortOption = ListFilesOption.SORT_LAST_ACCESS_ASC;
+                            break;
+                        case SORT_CREATION_DESC:
+                            sortOption = ListFilesOption.SORT_CREATION_DESC;
+                            break;
+                        case SORT_CREATION_ASC:
+                            sortOption = ListFilesOption.SORT_CREATION_ASC;
+                            break;
+                    }
                 }
             }
-        }
 
-        File pathFile = new File(path);
-
-        // 如果是目录
-        if (isDirectory(path)) {
+            File pathFile = new File(path);
             File[] listFiles = pathFile.listFiles(); // 可能会返回null
 
             // 排序
@@ -746,15 +744,15 @@ public class FileUtil {
             Files.copy(Paths.get(path), toPath, copyOptions.toArray(new CopyOption[0]));
             return true;
         } catch (UnsupportedOperationException e) {
-            logger.error(getLinesString("拷贝文件失败，不支持的CopyOption。", e.getMessage()));
+            logger.debug(getLinesString("拷贝文件失败，不支持的CopyOption。", e.getMessage()));
         } catch (FileAlreadyExistsException e) {
-            logger.error(getLinesString("拷贝文件失败，文件已存在。", toPath.toString(), e.getMessage()));
+            logger.debug(getLinesString("拷贝文件失败，文件已存在。", toPath.toString(), e.getMessage()));
         } catch (DirectoryNotEmptyException e) {
-            logger.error(getLinesString("拷贝文件失败，目录不为空。", toPath.toString(), e.getMessage()));
+            logger.debug(getLinesString("拷贝文件失败，目录不为空。", toPath.toString(), e.getMessage()));
         } catch (IOException e) {
-            logger.error(getLinesString("拷贝文件失败，I/O异常。", toPath.toString(), e.getMessage()));
+            logger.debug(getLinesString("拷贝文件失败，I/O异常。", toPath.toString(), e.getMessage()));
         } catch (SecurityException e) {
-            logger.error(getLinesString("拷贝文件失败，安全异常。", toPath.toString(), e.getMessage()));
+            logger.debug(getLinesString("拷贝文件失败，安全异常。", toPath.toString(), e.getMessage()));
         }
         return false;
     }
@@ -842,13 +840,13 @@ public class FileUtil {
             Files.delete(Paths.get(path));
             return true;
         } catch (NoSuchFileException e) {
-            logger.error(getLinesString("删除文件失败，文件不存在。", path, e.getMessage()));
+            logger.debug(getLinesString("删除文件失败，文件不存在。", path, e.getMessage()));
         } catch (DirectoryNotEmptyException e) {
-            logger.error(getLinesString("删除文件失败，目录不为空。", path, e.getMessage()));
+            logger.debug(getLinesString("删除文件失败，目录不为空。", path, e.getMessage()));
         } catch (IOException e) {
-            logger.error(getLinesString("创建目录失败，I/O异常。", path, e.getMessage()));
+            logger.debug(getLinesString("创建目录失败，I/O异常。", path, e.getMessage()));
         } catch (SecurityException e) {
-            logger.error(getLinesString("创建目录失败，安全异常。", path, e.getMessage()));
+            logger.debug(getLinesString("创建目录失败，安全异常。", path, e.getMessage()));
         }
         return false;
     }
@@ -955,11 +953,11 @@ public class FileUtil {
      * @author zhangh
      * ${DATE}
      */
-    public static boolean deleteFiles(List<File> files, boolean safeModel) {
+    public static boolean delete(List<File> files, boolean safeModel) {
         // 检查是否为目录文件
         for (File file : files) {
             if (file.isDirectory()) {
-                logger.error(getLinesString("删除文件失败，不能是目录文件。", file.getPath()));
+                logger.debug(getLinesString("删除文件失败，不能是目录文件。", file.getPath()));
                 return false;
             }
         }
@@ -1008,8 +1006,8 @@ public class FileUtil {
      * @author zhangh
      * ${DATE}
      */
-    public static boolean deleteFiles(List<File> files) {
-        return deleteFiles(files, false);
+    public static boolean delete(List<File> files) {
+        return delete(files, false);
     }
 
     /**
@@ -1169,14 +1167,14 @@ public class FileUtil {
             try {
                 return Files.readAllBytes(Paths.get(path));
             } catch (IOException e) {
-                logger.error(getLinesString("读文件失败，I/O异常。", path, e.getMessage()));
+                logger.debug(getLinesString("读文件失败，I/O异常。", path, e.getMessage()));
             } catch (OutOfMemoryError e) {
-                logger.error(getLinesString("读文件失败，文件不能大于2GB。", path, e.getMessage()));
+                logger.debug(getLinesString("读文件失败，文件不能大于2GB。", path, e.getMessage()));
             } catch (SecurityException e) {
-                logger.error(getLinesString("读文件失败，安全异常。", path, e.getMessage()));
+                logger.debug(getLinesString("读文件失败，安全异常。", path, e.getMessage()));
             }
         } else {
-            logger.error(getLinesString("读文件失败，文件不存在或不是文件。", path));
+            logger.debug(getLinesString("读文件失败，文件不存在或不是文件。", path));
         }
         return null;
     }
@@ -1219,12 +1217,12 @@ public class FileUtil {
             try {
                 return Files.readAllLines(Paths.get(path), charset);
             } catch (IOException e) {
-                logger.error(getLinesString("读文件失败，I/O异常。", path, e.getMessage()));
+                logger.debug(getLinesString("读文件失败，I/O异常。", path, e.getMessage()));
             } catch (SecurityException e) {
-                logger.error(getLinesString("读文件失败，安全异常。", path, e.getMessage()));
+                logger.debug(getLinesString("读文件失败，安全异常。", path, e.getMessage()));
             }
         } else {
-            logger.error(getLinesString("读文件失败，文件不存在或不是文件。", path));
+            logger.debug(getLinesString("读文件失败，文件不存在或不是文件。", path));
         }
         return null;
     }
@@ -1253,14 +1251,14 @@ public class FileUtil {
                 Files.write(Paths.get(path), bytes, option);
                 return true;
             } catch (IOException e) {
-                logger.error(getLinesString("写文件失败，I/O异常。", path, e.getMessage()));
+                logger.debug(getLinesString("写文件失败，I/O异常。", path, e.getMessage()));
             } catch (UnsupportedOperationException e) {
-                logger.error(getLinesString("写文件失败，错误的操作类型。", path, e.getMessage()));
+                logger.debug(getLinesString("写文件失败，错误的操作类型。", path, e.getMessage()));
             } catch (SecurityException e) {
-                logger.error(getLinesString("写文件失败，安全异常。", path, e.getMessage()));
+                logger.debug(getLinesString("写文件失败，安全异常。", path, e.getMessage()));
             }
         } else {
-            logger.error(getLinesString("写文件失败，不存在或不是文件。"), path);
+            logger.debug(getLinesString("写文件失败，不存在或不是文件。"), path);
         }
         return false;
     }
